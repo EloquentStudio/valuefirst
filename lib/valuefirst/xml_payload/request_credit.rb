@@ -15,10 +15,3 @@ module XmlPayload
   end
 
 end
-
-=begin
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE REQUESTCREDIT SYSTEM "http://127.0.0.1:80/psms/dtd/requestcredit.dtd">
-<REQUESTCREDIT USERNAME="" PASSWORD="">
-</REQUESTCREDIT>
-=end

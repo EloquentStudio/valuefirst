@@ -33,6 +33,10 @@ module XmlPayload
       
       node
     end
+
+    def self.user_tag vfirst_config
+      XmlPayload::XmlGenerator.create_node("USER", attributes: {"USERNAME" => vfirst_config.username.to_s, "PASSWORD" => vfirst_config.password.to_s})
+    end
   end
 
 end

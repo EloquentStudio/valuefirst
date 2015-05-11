@@ -18,8 +18,6 @@ module Valuefirst
     def send_vcard
     end
 
-    def status_request
-    end
 	end
 
 end

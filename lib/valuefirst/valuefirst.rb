@@ -20,6 +20,11 @@ module Valuefirst
       call_api payload, "credits"
     end
 
+    def status_request guid_seq_hash
+      payload = XmlPayload::StatusRequest.status_request @config, guid_seq_hash
+      call_api payload, "status"
+    end
+
     private
 
     def call_api payload, action
