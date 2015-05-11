@@ -1,13 +1,11 @@
-require 'pry'
-require 'pry-nav'
-
 module Valuefirst
   class Config
-    attr_accessor :username, :password, :url
+    attr_accessor :username, :password, :default_sender, :url
     
     def initialize(opts = {})
       @username = opts[:username]
       @password = opts[:password]
+      @default_sender = opts[:default_sender]
       @url      = opts[:url] || "http://api.myvaluefirst.com/psms/servlet/psms.Eservice2"
       @version  = opts[:version] || '1.2'
     end
