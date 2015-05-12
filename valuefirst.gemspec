@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-nav"
   spec.add_development_dependency "nokogiri-happymapper"
   spec.add_development_dependency "libxml-ruby"
+  spec.add_development_dependency "coveralls"
 end
