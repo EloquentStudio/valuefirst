@@ -5,7 +5,7 @@ module Valuefirst
   
   class Valuefirst
 
-    VALID_ACTIONS = ["send", "status", "credits"]
+    VALID_ACTIONS = %w(send status credits)
 
     attr_reader :config
 

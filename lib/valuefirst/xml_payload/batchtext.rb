@@ -15,7 +15,7 @@ module XmlPayload
         sms_tag = XmlPayload::XmlGenerator.create_node("SMS", attributes: { "UDH"     => "0",
                                                                   "CODING"  => "1",
                                                                   "TEXT"    => message_record["message_content"].to_s,
-                                                                  "PRPERTY" => "0",
+                                                                  "PROPERTY" => "0",
                                                                   "ID"      => "1",
                                                                 })
 

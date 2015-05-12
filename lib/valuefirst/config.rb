@@ -1,6 +1,6 @@
 module Valuefirst
   class Config
-    attr_accessor :username, :password, :default_sender, :url
+    attr_accessor :username, :password, :default_sender, :url, :version
     
     def initialize(opts = {})
       @username = opts[:username]

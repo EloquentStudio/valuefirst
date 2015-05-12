@@ -1,6 +1,6 @@
 module XmlPayload
   class StatusRequest
-    def self.status_request vfirst_config, guid_seq_hash
+    def self.statusrequest vfirst_config, guid_seq_hash
       doc = XmlPayload::XmlGenerator.new_doc
       message_tag = XmlPayload::XmlGenerator.create_node("STATUSREQUEST", attributes: {"VER" => XmlPayload::VERSION})
       doc.root = message_tag
