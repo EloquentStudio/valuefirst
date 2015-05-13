@@ -12,8 +12,8 @@ module Valuefirst
 
     def validate
       errors = []
-      errors << "Invalid username" if @username.nil?
-      errors << "Invalid password" if @password.nil?
+      errors << "Invalid username" if @username.nil? || @username.empty? 
+      errors << "Invalid password" if @password.nil? || @password.empty?
       errors << "API version not supported" unless @version == '1.2'
       unless errors.empty?
         raise ArgumentError, "#{errors.join(', ')}"
