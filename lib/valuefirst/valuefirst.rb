@@ -21,7 +21,7 @@ module Valuefirst
     end
 
     def status_request guid_seq_hash
-      payload = XmlPayload::StatusRequest.status_request @config, guid_seq_hash
+      payload = XmlPayload::StatusRequest.statusrequest @config, guid_seq_hash
       call_api payload, "status"
     end
 
@@ -39,7 +39,7 @@ module Valuefirst
       when Net::HTTPSuccess, Net::HTTPRedirection
         return HappyMapper.parse(api_reponse.body.downcase)
       else
-        return api_reponse.body
+        return api_reponse
       end
     end
 
