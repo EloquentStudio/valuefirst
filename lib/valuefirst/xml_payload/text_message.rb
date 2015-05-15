@@ -1,6 +1,6 @@
 module XmlPayload
   class TextMessage
-    def self.textmessage vfirst_config, message_content, phone_number, sender_id
+    def self.textmessage(vfirst_config, message_content, phone_number, sender_id = nil)
       doc = XmlPayload::XmlGenerator.new_doc
       message_tag = XmlPayload::XmlGenerator.create_node("MESSAGE", attributes: {"VER" => XmlPayload::VERSION})
       doc.root = message_tag
