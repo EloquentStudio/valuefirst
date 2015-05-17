@@ -83,7 +83,7 @@ describe "Vlauefirst::Valuefirst" do
         expect{valuefirst_obj.bulksend_message File.absolute_path("spec/support/non_readable_file")}.to raise_error(ArgumentError).with_message("File is not readable.")
       end
 
-      it "makes message send request to valuefirst_api" do
+      it "makes bulkmessage send request to valuefirst_api" do
         expect(XmlPayload::Batchtext).to receive(:batchtext).with(valuefirst_obj.config, file_path)
         expect_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
         valuefirst_obj.bulksend_message File.absolute_path(file_path)
@@ -117,10 +117,73 @@ describe "Vlauefirst::Valuefirst" do
           .and_return(payload)
       end
 
-      it "makes message send request to valuefirst_api" do
+      it "makes multicast message send request to valuefirst_api" do
         expect(XmlPayload::MulticastMessage).to receive(:multicastmessage).with(valuefirst_obj.config, "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id")
         expect_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
         valuefirst_obj.multicast_message "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id"
+      end
+    end
+
+    describe "#send_unicode" do
+      let! (:valuefirst_obj) { Valuefirst::Valuefirst.new(username: "user_name", password: "password", default_sender: "default_sender") }
+      let!(:payload) { XmlPayload::UnicodeMessage.unicodemessage(valuefirst_obj.config, "message_content", "phone_number", "sender_id") }
+     
+      before do
+        allow_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        allow(XmlPayload::UnicodeMessage).to receive(:unicodemessage).with(valuefirst_obj.config, "message_content", "phone_number", "sender_id")
+          .and_return(payload)
+      end
+
+      it "makes unicode message send request to valuefirst_api" do
+        expect(XmlPayload::UnicodeMessage).to receive(:unicodemessage).with(valuefirst_obj.config, "message_content", "phone_number", "sender_id")
+        expect_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        valuefirst_obj.send_unicode "message_content", "phone_number", "sender_id"
+      end
+    end
+
+    describe "#bulksend_unicode" do
+      let! (:file_path) { File.absolute_path("spec/support/csv_sample.csv") }
+      let! (:valuefirst_obj) { Valuefirst::Valuefirst.new(username: "user_name", password: "password", default_sender: "default_sender") }
+      let!(:payload) { XmlPayload::Batchunicode.batchunicode(valuefirst_obj.config, file_path) }
+     
+      before do
+        FileUtils.chmod "-r", "spec/support/non_readable_file"
+        allow_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        allow(XmlPayload::Batchunicode).to receive(:batchunicode).with(valuefirst_obj.config, file_path)
+          .and_return(payload)
+      end
+      after do
+        FileUtils.chmod "+r", "spec/support/non_readable_file"
+      end
+      it "raises error when file does not exist" do      
+        expect{valuefirst_obj.bulksend_unicode "non_existent_file_path"}.to raise_error(ArgumentError).with_message("File does not exist.")
+      end
+
+      it "raises error when file is not readable" do
+        expect{valuefirst_obj.bulksend_unicode File.absolute_path("spec/support/non_readable_file")}.to raise_error(ArgumentError).with_message("File is not readable.")
+      end
+
+      it "makes bulkunicode send request to valuefirst_api" do
+        expect(XmlPayload::Batchunicode).to receive(:batchunicode).with(valuefirst_obj.config, file_path)
+        expect_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        valuefirst_obj.bulksend_unicode File.absolute_path(file_path)
+      end
+    end
+
+    describe "#multicast_unicode" do
+      let! (:valuefirst_obj) { Valuefirst::Valuefirst.new(username: "user_name", password: "password", default_sender: "default_sender") }
+      let!(:payload) { XmlPayload::MulticastUnicode.multicastunicode(valuefirst_obj.config, "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id") }
+     
+      before do
+        allow_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        allow(XmlPayload::MulticastUnicode).to receive(:multicastunicode).with(valuefirst_obj.config, "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id")
+          .and_return(payload)
+      end
+
+      it "makes multicast unicode send request to valuefirst_api" do
+        expect(XmlPayload::MulticastUnicode).to receive(:multicastunicode).with(valuefirst_obj.config, "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id")
+        expect_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        valuefirst_obj.multicast_unicode "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id"
       end
     end
 
