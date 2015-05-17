@@ -61,6 +61,52 @@ describe "Vlauefirst::Valuefirst" do
       end
     end
 
+    describe "#bulksend_message" do
+      let! (:file_path) { File.absolute_path("spec/support/csv_sample.csv") }
+      let! (:valuefirst_obj) { Valuefirst::Valuefirst.new(username: "user_name", password: "password", default_sender: "default_sender") }
+      let!(:payload) { XmlPayload::Batchtext.batchtext(valuefirst_obj.config, file_path) }
+     
+      before do
+        FileUtils.chmod "-r", "spec/support/non_readable_file"
+        allow_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        allow(XmlPayload::Batchtext).to receive(:batchtext).with(valuefirst_obj.config, file_path)
+          .and_return(payload)
+      end
+      after do
+        FileUtils.chmod "+r", "spec/support/non_readable_file"
+      end
+      it "raises error when file does not exist" do      
+        expect{valuefirst_obj.bulksend_message "non_existent_file_path"}.to raise_error(ArgumentError).with_message("File does not exist.")
+      end
+
+      it "raises error when file is not readable" do
+        expect{valuefirst_obj.bulksend_message File.absolute_path("spec/support/non_readable_file")}.to raise_error(ArgumentError).with_message("File is not readable.")
+      end
+
+      it "makes message send request to valuefirst_api" do
+        expect(XmlPayload::Batchtext).to receive(:batchtext).with(valuefirst_obj.config, file_path)
+        expect_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        valuefirst_obj.bulksend_message File.absolute_path(file_path)
+      end
+    end
+
+    describe "#send_message" do
+      let! (:valuefirst_obj) { Valuefirst::Valuefirst.new(username: "user_name", password: "password", default_sender: "default_sender") }
+      let!(:payload) { XmlPayload::TextMessage.textmessage(valuefirst_obj.config, "message_content", "phone_number", "sender_id") }
+     
+      before do
+        allow_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        allow(XmlPayload::TextMessage).to receive(:textmessage).with(valuefirst_obj.config, "message_content", "phone_number", "sender_id")
+          .and_return(payload)
+      end
+
+      it "makes message send request to valuefirst_api" do
+        expect(XmlPayload::TextMessage).to receive(:textmessage).with(valuefirst_obj.config, "message_content", "phone_number", "sender_id")
+        expect_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        valuefirst_obj.send_message "message_content", "phone_number", "sender_id"
+      end
+    end
+
     describe "#api_call" do
       it "raises ArgumentError when called with invalid action" do
         expect{ valuefirst_obj.send(:call_api, "payload", "invalidStatus") }.to raise_error(ArgumentError)

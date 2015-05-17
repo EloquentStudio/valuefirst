@@ -25,6 +25,18 @@ module Valuefirst
       call_api payload, "status"
     end
 
+    def send_message message_content, phone_number, sender_id
+      payload = XmlPayload::TextMessage.textmessage @config, message_content, phone_number, sender_id
+      call_api payload, "send"
+    end
+
+    def bulksend_message file_path
+      raise ArgumentError, "File does not exist." unless File.exists? file_path.to_s
+      raise ArgumentError, "File is not readable." unless File.readable? file_path.to_s
+      payload = XmlPayload::Batchtext.batchtext @config, file_path
+      call_api payload, "send"
+    end
+
     private
 
     def call_api payload, action
