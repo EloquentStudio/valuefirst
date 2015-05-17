@@ -4,6 +4,7 @@ require "valuefirst/xml_payload/xml_generator.rb"
 require "valuefirst/xml_payload/request_credit.rb"
 require "valuefirst/xml_payload/batchtext.rb"
 require "valuefirst/xml_payload/text_message.rb"
+require "valuefirst/xml_payload/multicast_message.rb"
 require "valuefirst/xml_payload/status_request.rb"
 
 #gems

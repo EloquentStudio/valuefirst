@@ -25,7 +25,7 @@ module Valuefirst
       call_api payload, "status"
     end
 
-    def send_message message_content, phone_number, sender_id
+    def send_message message_content, phone_number, sender_id = nil
       payload = XmlPayload::TextMessage.textmessage @config, message_content, phone_number, sender_id
       call_api payload, "send"
     end
@@ -35,6 +35,23 @@ module Valuefirst
       raise ArgumentError, "File is not readable." unless File.readable? file_path.to_s
       payload = XmlPayload::Batchtext.batchtext @config, file_path
       call_api payload, "send"
+    end
+
+    def multicast_message message_content, phone_number_array, sender_id = nil
+      payload = XmlPayload::MulticastMessage.multicastmessage @config, message_content, phone_number_array, sender_id
+      call_api payload, "send"
+    end
+
+    def send_unicode
+    end
+
+    def bulksend_unicode
+    end
+
+    def send_vcard
+    end
+
+    def bulksend_vcard
     end
 
     private

@@ -107,6 +107,23 @@ describe "Vlauefirst::Valuefirst" do
       end
     end
 
+    describe "#multicast_message" do
+      let! (:valuefirst_obj) { Valuefirst::Valuefirst.new(username: "user_name", password: "password", default_sender: "default_sender") }
+      let!(:payload) { XmlPayload::MulticastMessage.multicastmessage(valuefirst_obj.config, "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id") }
+     
+      before do
+        allow_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        allow(XmlPayload::MulticastMessage).to receive(:multicastmessage).with(valuefirst_obj.config, "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id")
+          .and_return(payload)
+      end
+
+      it "makes message send request to valuefirst_api" do
+        expect(XmlPayload::MulticastMessage).to receive(:multicastmessage).with(valuefirst_obj.config, "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id")
+        expect_any_instance_of(Valuefirst::Valuefirst).to receive(:call_api).with(payload, "send")
+        valuefirst_obj.multicast_message "message_content", ["XXXXXXXX01", "XXXXXXXX02", "XXXXXXXX03", "XXXXXXXX04"], "sender_id"
+      end
+    end
+
     describe "#api_call" do
       it "raises ArgumentError when called with invalid action" do
         expect{ valuefirst_obj.send(:call_api, "payload", "invalidStatus") }.to raise_error(ArgumentError)
