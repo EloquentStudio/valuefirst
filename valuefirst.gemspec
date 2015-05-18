@@ -23,12 +23,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "nokogiri-happymapper", "~> 0.4"
+  spec.add_dependency "libxml-ruby", "~> 2.0"
+
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec-rails"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "pry-nav"
-  spec.add_development_dependency "nokogiri-happymapper"
-  spec.add_development_dependency "libxml-ruby"
-  spec.add_development_dependency "coveralls"
+  spec.add_development_dependency "rspec-rails", "~> 3.2"
+  spec.add_development_dependency "pry", "~> 0.10"
+  spec.add_development_dependency "pry-nav", "~> 0.2.4"
+  spec.add_development_dependency "coveralls", "~> 0.8"
 end

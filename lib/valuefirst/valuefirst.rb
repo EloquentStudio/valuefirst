@@ -4,15 +4,17 @@ require_relative 'valuefirst.rb'
 module Valuefirst
   
   class Valuefirst
-
-    VALID_ACTIONS = %w(send status credits)
-
+    include Constants
     attr_reader :config
 
-    def initialize(opts = {})
+    def initialize(opts = {}, &block)
       @config = Config.new(opts)
       yield(@config) if block_given?
       @config.validate
+    end
+
+    def self.error_desc error_code
+      ERROR_CODES.fetch(error_code.to_s, "Description not available")
     end
 
     def credit_request
@@ -57,12 +59,6 @@ module Valuefirst
     def multicast_unicode message_content, phone_number_array, sender_id = nil
       payload = XmlPayload::MulticastUnicode.multicastunicode @config, message_content, phone_number_array, sender_id
       call_api payload, "send"
-    end
-
-    def send_vcard
-    end
-
-    def bulksend_vcard
     end
 
     private

@@ -1,4 +1,15 @@
+require 'forwardable'
+require 'yaml'
+require "net/http"
+require 'csv'
+#gems
+require 'happymapper'
+require 'pry'
+require 'pry-nav'
+require 'xml'
+
 require "valuefirst/version"
+require "valuefirst/constants"
 require "valuefirst/valuefirst.rb"
 require "valuefirst/xml_payload/xml_generator.rb"
 require "valuefirst/xml_payload/request_credit.rb"
@@ -9,10 +20,3 @@ require "valuefirst/xml_payload/unicode_message.rb"
 require "valuefirst/xml_payload/batchunicode.rb"
 require "valuefirst/xml_payload/multicast_unicode.rb"
 require "valuefirst/xml_payload/status_request.rb"
-
-#gems
-require 'happymapper'
-require 'pry'
-require 'pry-nav'
-require 'xml'
-require 'csv'
